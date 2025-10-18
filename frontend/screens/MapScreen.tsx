@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const AIPlanner = () => {
+const Map = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>AIPlanner is rendering!</Text>
+      <Text>Map is rendering!</Text>
     </View>
   );
 };
 
-export default AIPlanner;
+export default Map;
