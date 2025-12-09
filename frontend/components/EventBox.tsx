@@ -10,54 +10,91 @@ type EventBoxProps = {
   onPress?: () => void;
 };
 
-const EventBox: React.FC<EventBoxProps> = ({ image, location, date, time, title, onPress }) => (
-  <Pressable 
-    onPress={onPress} 
+const EventBox: React.FC<EventBoxProps> = ({
+  image,
+  location,
+  date,
+  time,
+  title,
+  onPress,
+}) => (
+  <Pressable
+    onPress={onPress}
     style={({ pressed }) => [
       styles.box,
-      pressed ? styles.pressedContainer : null,
-    ]}>
-
+      pressed && styles.pressedContainer,
+    ]}
+  >
+    <View style={styles.imageWrapper}>
       <Image source={{ uri: image }} style={styles.image} />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.location}>{location}</Text>
-      <Text style={styles.date}>{date}</Text> <Text style={styles.time}>{time}</Text>
+    </View>
 
+    <Text style={styles.title}>{title}</Text>
+
+    <View style={styles.metaRow}>
+      <Text style={styles.location}>{location}</Text>
+    </View>
+
+    <View style={styles.metaRow}>
+      <Text style={styles.date}>{date}</Text>
+      <Text style={styles.time}> · {time}</Text>
+    </View>
   </Pressable>
 );
 
 const styles = StyleSheet.create({
   box: {
-    borderRadius: 12,
-    backgroundColor: '#d3eaffff',
-    padding: 16,
-    marginVertical: 6,
+    borderRadius: 24,               // 24px radius
+    backgroundColor: '#1C1C1C',     // card surface
+    padding: 16,                    // ~16px, use 24 if you want bigger cards
+    marginVertical: 8,
     marginHorizontal: 10,
-    elevation: 2,
-    shadowColor: '#000'
+    shadowColor: '#00FFC6',         // teal glow
+    shadowOpacity: 0.4,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  imageWrapper: {
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(0,255,198,0.4)', // subtle neon border
   },
   image: {
     width: '100%',
-    height: 30,
-    borderRadius: 8,
-    marginBottom: 8,
+    height: 140,
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: 18
+    color: '#EDEDED',               // high‑contrast white
+    fontSize: 18,
+    fontWeight: '600',              // Rubik medium/semibold
+    marginBottom: 6,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
   },
   location: {
-    color: '#666'
+    color: '#00FFC6',               // neon teal accent
+    fontSize: 14,
+    fontWeight: '500',
   },
   date: {
-    color: '#888'
+    color: '#AAAAAA',               // muted text
+    fontSize: 13,
   },
   time: {
-    color: '#888'
+    color: '#A070FF',               // secondary violet accent
+    fontSize: 13,
   },
   pressedContainer: {
-    backgroundColor: '#84b2deff'
-  }
+    shadowOpacity: 0.8,             // stronger glow on press
+    transform: [{ scale: 0.98 }],
+    backgroundColor: '#181818',
+  },
 });
 
 export default EventBox;

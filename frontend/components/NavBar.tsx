@@ -5,7 +5,9 @@ import MapScreen from '../screens/MapScreen';
 import AIPlanner from '../screens/AIPlanner';
 import Community from '../screens/Community';
 import Mytrips from '../screens/Mytrips';
-import ProfileButton from './ProfileButton'; // Adjust import path as needed
+import ProfileButton from './ProfileButton';
+import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,15 +18,52 @@ interface MyTabsProps {
 const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
   return (
     <Tab.Navigator
-      screenOptions={{
-        headerRight: () => <ProfileButton onSignOut={onSignOut} />, // Button always at top right
-      }}
+      screenOptions={({ route }) => ({
+        headerRight: () => <ProfileButton onSignOut={onSignOut} />,
+        tabBarIcon: ({ color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap;
+
+          if (route.name === 'Events') iconName = 'calendar-outline';
+          else if (route.name === 'Maps') iconName = 'map-outline';
+          else if (route.name === 'AIPlanner') iconName = 'sparkles-outline';
+          else if (route.name === 'Community') iconName = 'people-outline';
+          else iconName = 'briefcase-outline'; // Mytrips
+
+          return <Ionicons name={iconName} size={22} color={color} />;
+        },
+        tabBarActiveTintColor: '#00FFC6',
+        tabBarInactiveTintColor: '#AAAAAA',
+        tabBarStyle: {
+          backgroundColor: '#1C1C1C',
+          borderTopColor: 'rgba(255,255,255,0.1)',
+        },
+      })}
     >
-      <Tab.Screen name="Events" component={Events} />
-      <Tab.Screen name="Maps" component={MapScreen} />
-      <Tab.Screen name="AIPlanner" component={AIPlanner} />
-      <Tab.Screen name="Community" component={Community} />
-      <Tab.Screen name="Mytrips" component={Mytrips} />
+      <Tab.Screen
+        name="Events"
+        component={Events}
+        options={{ title: 'Events' }}
+      />
+      <Tab.Screen
+        name="Maps"
+        component={MapScreen}
+        options={{ title: 'Map' }}
+      />
+      <Tab.Screen
+        name="AIPlanner"
+        component={AIPlanner}
+        options={{ title: 'AI Planner' }}
+      />
+      <Tab.Screen
+        name="Community"
+        component={Community}
+        options={{ title: 'Community' }}
+      />
+      <Tab.Screen
+        name="Mytrips"
+        component={Mytrips}
+        options={{ title: 'My Trips' }}
+      />
     </Tab.Navigator>
   );
 };

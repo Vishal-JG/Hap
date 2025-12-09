@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
 
 interface ProfileButtonProps {
-  onSignOut: () => void;
+  onSignOut: () => void;  
 }
 
 const ProfileButton: React.FC<ProfileButtonProps> = ({ onSignOut }) => {
@@ -10,8 +10,13 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({ onSignOut }) => {
 
   return (
     <View>
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.button}>
-        <Text style={styles.avatar}>😊</Text>
+      <TouchableOpacity 
+        onPress={() => setModalVisible(true)}
+        style={styles.button}>
+         <Image
+          source={require('../assets/default-avatar.png')}
+          style = {styles.avatar}
+        />
       </TouchableOpacity>
       <Modal
         transparent
@@ -40,18 +45,19 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({ onSignOut }) => {
   );
 };
 
+const AVATAR_SIZE = 32;
+
 const styles = StyleSheet.create({
   button: {
     marginRight: 12,
-    backgroundColor: '#eee',
-    borderRadius: 18,
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: AVATAR_SIZE / 2,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    overflow: 'hidden',
   },
   avatar: {
-    fontSize: 24,
+    width: '100%',
+    height: '100%',
   },
   overlay: {
     flex: 1,

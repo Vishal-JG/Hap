@@ -1,76 +1,73 @@
-import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import MyTabs from './components/NavBar';
 import './styles/tailwind.css';
 import AuthPage from './screens/AuthPage';
 import SplashScreen from './screens/SplashScreen';
-import { getUser, signOut } from './auth/auth'; // your auth functions
-import ProfileButton from './components/ProfileButton';
+import { signOut } from './auth/auth';
 
-export default function App() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const splashTimer = setTimeout(() => setShowSplash(false), 3000);
-
-    getUser().then(({ user }) => {
-      setAuthenticated(!!user);
-      setLoading(false);
-    });
-
-    return () => clearTimeout(splashTimer);
-  }, []);
-
-  const handleSignOut = async () => {
-  const { error } = await signOut();
-  if (error) {
-    alert('Error signing out: ' + error.message);
-  } else {
-    setAuthenticated(false);
-  }
+const HapTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#121212',
+    card: '#121212',
+    text: '#EDEDED',
+  },
 };
 
+export default function App() {
+  // ONLY HOOKS HERE
+  const [authenticated, setAuthenticated] = useState(true); // force logged-in for now
+  const [showSplash] = useState(false);                     // disable splash for now
+
+  const [fontsLoaded] = useFonts({
+    Rubik: require('./assets/fonts/Rubik-Regular.ttf'),
+    'Rubik-Medium': require('./assets/fonts/Rubik-Medium.ttf'),
+    'Rubik-Bold': require('./assets/fonts/Rubik-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
+
+  // NO useEffect AT ALL HERE
+
+  const handleSignOut = async () => {
+    await signOut();
+    setAuthenticated(false);
+  };
 
   if (showSplash) {
     return <SplashScreen />;
   }
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   if (!authenticated) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
         <AuthPage onAuthSuccess={() => setAuthenticated(true)} />
       </SafeAreaView>
     );
   }
 
-  // Render main app with tabs, pass ProfileButton through nav header via MyTabs or your stack config
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <MyTabs onSignOut={handleSignOut} />
+    <View style={{ flex: 1, backgroundColor: '#121212' }}>
+      <NavigationContainer theme={HapTheme}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
+          <MyTabs onSignOut={handleSignOut} />
+        </SafeAreaView>
       </NavigationContainer>
-      <StatusBar style="auto" />
-    </SafeAreaView>
+      <StatusBar style="light" backgroundColor="#121212" />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#121212',
     alignItems: 'center',
     justifyContent: 'center',
   },
