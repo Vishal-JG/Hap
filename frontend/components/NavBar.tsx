@@ -42,7 +42,7 @@ const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
       <Tab.Screen
         name="Events"
         component={Events}
-        options={{ title: 'Events' }}
+        options={{ title: 'Haps' }}
       />
       <Tab.Screen
         name="Maps"
@@ -57,7 +57,7 @@ const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
       <Tab.Screen
         name="Community"
         component={Community}
-        options={{ title: 'Community' }}
+        options={{ title: 'Finds' }}
       />
       <Tab.Screen
         name="Mytrips"
