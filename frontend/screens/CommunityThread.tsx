@@ -1,11 +1,43 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import CommunityPost from '../components/CommunityPost';
 
-const CommunityThread = () => {
+type Props = {
+  route: { params: { topic: string } };
+};
+
+const CommunityThread: React.FC<Props> = ({ route }) => {
+  const { topic } = route.params;
+  const [votes, setVotes] = useState(0);
+
+  const handlePress = () => {
+    Alert.alert('Post pressed');
+  };
+
+  const handleUpvote = () => {
+    setVotes((v) => v + 1);
+  };
+
+  const handleDownvote = () => {
+    setVotes((v) => v - 1);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Thread title here</Text>
-      {/* later: list of posts with upvotes/downvotes */}
+      {/* Header already shows topic; this is just context text */}
+      <Text style={styles.subtitle}>Discussion: {topic}</Text>
+
+      <CommunityPost
+        image="https://placekitten.com/400/200"
+        title="Music Festival"
+        location="Central Park, NY"
+        date="Sat, July 20th"
+        time="7 PM"
+        votes={votes}
+        onPress={handlePress}
+        onUpvote={handleUpvote}
+        onDownvote={handleDownvote}
+      />
     </View>
   );
 };
@@ -16,10 +48,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     padding: 16,
   },
-  title: {
-    color: '#EDEDED',
-    fontSize: 20,
-    fontWeight: '600',
+  subtitle: {
+    color: '#AAAAAA',
+    fontSize: 14,
+    marginBottom: 16,
   },
 });
 

@@ -3,11 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Events from '../screens/Events';
 import MapScreen from '../screens/MapScreen';
 import AIPlanner from '../screens/AIPlanner';
-import Community from '../screens/Community';
 import Mytrips from '../screens/Mytrips';
 import ProfileButton from './ProfileButton';
-import { Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import CommunityStack from '../screens/CommunityStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +19,7 @@ const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerRight: () => <ProfileButton onSignOut={onSignOut} />,
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ color }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
           if (route.name === 'Events') iconName = 'calendar-outline';
@@ -36,6 +35,9 @@ const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
         tabBarStyle: {
           backgroundColor: '#1C1C1C',
           borderTopColor: 'rgba(255,255,255,0.1)',
+          height: 64,
+          paddingBottom: 10,
+          paddingTop: 8,
         },
       })}
     >
@@ -56,8 +58,8 @@ const MyTabs: React.FC<MyTabsProps> = ({ onSignOut }) => {
       />
       <Tab.Screen
         name="Community"
-        component={Community}
-        options={{ title: 'Finds' }}
+        component={CommunityStack}   // <-- use the stack here
+        options={{ title: 'Finds', headerShown: false }}
       />
       <Tab.Screen
         name="Mytrips"

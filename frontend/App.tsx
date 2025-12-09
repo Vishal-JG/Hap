@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import MyTabs from './components/NavBar';
+import RootNavigator from './screens/RootNavigator';
 import './styles/tailwind.css';
 import AuthPage from './screens/AuthPage';
 import SplashScreen from './screens/SplashScreen';
@@ -53,15 +53,15 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#121212' }}>
-      <NavigationContainer theme={HapTheme}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
-          <MyTabs onSignOut={handleSignOut} />
-        </SafeAreaView>
-      </NavigationContainer>
-      <StatusBar style="light" backgroundColor="#121212" />
-    </View>
-  );
+  <View style={{ flex: 1, backgroundColor: '#121212' }}>
+    <NavigationContainer theme={HapTheme}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
+        <RootNavigator />
+      </SafeAreaView>
+    </NavigationContainer>
+    <StatusBar style="light" backgroundColor="#121212" />
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
