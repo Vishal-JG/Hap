@@ -24,20 +24,26 @@ const CommunityThread: React.FC<Props> = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header already shows topic; this is just context text */}
       <Text style={styles.subtitle}>Discussion: {topic}</Text>
 
-      <CommunityPost
-        image="https://placekitten.com/400/200"
-        title="Music Festival"
-        location="Central Park, NY"
-        date="Sat, July 20th"
-        time="7 PM"
-        votes={votes}
-        onPress={handlePress}
-        onUpvote={handleUpvote}
-        onDownvote={handleDownvote}
-      />
+        <CommunityPost
+      image="https://placekitten.com/400/200"
+      title="Music Festival"
+      location="Central Park, NY"
+      date="Sat, July 20th"
+      time="7 PM"
+      votes = {10}
+      onPress={handlePress}
+    />
+    <CommunityPost
+      image="https://placekitten.com/400/201"
+      title="Street Food Crawl"
+      location="Chinatown"
+      date="Sun, July 21st"
+      time="6 PM"
+      votes={32}
+      onPress={handlePress}
+    />
     </View>
   );
 };

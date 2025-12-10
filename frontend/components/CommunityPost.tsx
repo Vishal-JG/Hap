@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 
-type EventBoxProps = {
+type CommunityPostProps = {
   image: string;
   location: string;
   date: string;
   time: string;
   title: string;
-  votes: number;
+  votes: number;          // hardcoded starting value
   onPress?: () => void;
-  onUpvote: () => void;
-  onDownvote: () => void;
 };
 
-const EventBox: React.FC<EventBoxProps> = ({
+const CommunityPost: React.FC<CommunityPostProps> = ({
   image,
   location,
   date,
@@ -21,49 +19,95 @@ const EventBox: React.FC<EventBoxProps> = ({
   title,
   votes,
   onPress,
-  onUpvote,
-  onDownvote,
-}) => (
-  <Pressable
-    onPress={onPress}
-    style={({ pressed }) => [
-      styles.box,
-      pressed && styles.pressedContainer,
-    ]}
-  >
-    <View style={styles.mainContent}>
-      {/* Left side: Image */}
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: image }} style={styles.image} />
-      </View>
+}) => {
+  // 👇 use the prop ONCE as initial value
+  const [currentVotes, setCurrentVotes] = useState<number>(votes);
+  const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
 
-      {/* Right side: Title and details */}
-      <View style={styles.contentContainer}>
-        <Text style={styles.title} numberOfLines={2}>{title}</Text>
-        
-        <View style={styles.metaRow}>
-          <Text style={styles.location}>{location}</Text>
+  const handleUpvote = () => {
+    if (userVote === 'up') {
+      setCurrentVotes(v => v - 1);
+      setUserVote(null);
+      return;
+    }
+    if (userVote === 'down') {
+      setCurrentVotes(v => v + 2);
+    } else {
+      setCurrentVotes(v => v + 1);
+    }
+    setUserVote('up');
+  };
+
+  const handleDownvote = () => {
+    if (userVote === 'down') {
+      setCurrentVotes(v => v + 1);
+      setUserVote(null);
+      return;
+    }
+    if (userVote === 'up') {
+      setCurrentVotes(v => v - 2);
+    } else {
+      setCurrentVotes(v => v - 1);
+    }
+    setUserVote('down');
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.box,
+        pressed && styles.pressedContainer,
+      ]}
+    >
+      <View style={styles.mainContent}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={styles.image} />
         </View>
 
-        <View style={styles.metaRow}>
-          <Text style={styles.date}>{date}</Text>
-          <Text style={styles.time}> · {time}</Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.title} numberOfLines={2}>{title}</Text>
+
+          <View style={styles.metaRow}>
+            <Text style={styles.location}>{location}</Text>
+          </View>
+
+          <View style={styles.metaRow}>
+            <Text style={styles.date}>{date}</Text>
+            <Text style={styles.time}> · {time}</Text>
+          </View>
         </View>
       </View>
-    </View>
 
-    {/* Bottom: Vote controls */}
-    <View style={styles.voteContainer}>
-      <Pressable style={styles.voteButton} onPress={onUpvote}>
-        <Text style={styles.upvoteText}>↑</Text>
-      </Pressable>
-      <Text style={styles.voteCount}>{votes}</Text>
-      <Pressable style={styles.voteButton} onPress={onDownvote}>
-        <Text style={styles.downvoteText}>↓</Text>
-      </Pressable>
-    </View>
-  </Pressable>
-);
+      <View style={styles.voteContainer}>
+        <Pressable onPress={handleUpvote} style={styles.voteButton}>
+          <Text
+            style={[
+              styles.voteIcon,
+              userVote === 'up' && styles.voteIconUpActive,
+            ]}
+          >
+            ↑
+          </Text>
+        </Pressable>
+
+        {/* 👇 ALWAYS render currentVotes, not props.votes */}
+        <Text style={styles.voteCount}>{currentVotes}</Text>
+
+        <Pressable onPress={handleDownvote} style={styles.voteButton}>
+          <Text
+            style={[
+              styles.voteIcon,
+              userVote === 'down' && styles.voteIconDownActive,
+            ]}
+          >
+            ↓
+          </Text>
+        </Pressable>
+      </View>
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   box: {
@@ -80,10 +124,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: 18,
   },
   imageContainer: {
-    flex: 0.35, // ~35% width for image
+    flex: 0.35,
     marginRight: 12,
     borderRadius: 16,
     overflow: 'hidden',
@@ -128,32 +172,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 0,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
   },
   voteButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#1C1C1C',
   },
-  upvoteText: {
-    color: '#00FFC6',
-    fontSize: 18,
+  voteIcon: {
+    fontSize: 25,
     fontWeight: '700',
+    color: '#FFFFFF',          // white when unpressed
   },
-  downvoteText: {
-    color: '#FF6B6B',
-    fontSize: 18,
-    fontWeight: '700',
+  voteIconUpActive: {
+    color: '#00FFC6',          // green/teal when upvoted
+  },
+  voteIconDownActive: {
+    color: '#FF7F7F',          // coral when downvoted
   },
   voteCount: {
     color: '#EDEDED',
     fontSize: 16,
     fontWeight: '700',
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     minWidth: 24,
     textAlign: 'center',
   },
@@ -164,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventBox;
+export default CommunityPost;

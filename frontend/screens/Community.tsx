@@ -21,12 +21,16 @@ const Community = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
       <ScrollView>
-        <CommunityChat title="Sports" onPress={() => openThread('Sports')} />
+        <CommunityChat 
+          title="Sports" 
+          onPress={() => openThread('Sports')} />
         <CommunityChat
           title="Music Festival"
           onPress={() => openThread('Music Festival')}
         />
-        <CommunityChat title="Foodies" onPress={() => openThread('Foodies')} />
+        <CommunityChat 
+          title="Foodies" 
+          onPress={() => openThread('Foodies')} />
         <CommunityChat
           title="Snake Show"
           onPress={() => openThread('Snake Show')}
