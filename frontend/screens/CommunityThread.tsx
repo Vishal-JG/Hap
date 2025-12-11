@@ -34,6 +34,7 @@ const CommunityThread: React.FC<Props> = ({ route }) => {
       time="7 PM"
       votes = {10}
       onPress={handlePress}
+      user = "John"
     />
     <CommunityPost
       image="https://placekitten.com/400/201"
@@ -43,7 +44,9 @@ const CommunityThread: React.FC<Props> = ({ route }) => {
       time="6 PM"
       votes={32}
       onPress={handlePress}
+      user = "Peter"
     />
+    
     </View>
   );
 };

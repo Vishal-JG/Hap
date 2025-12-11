@@ -38,7 +38,7 @@ const Community = () => {
     },
     {
       id: 4,
-      title: 'Snake Show',
+      title: 'Animal Lovers',
       tagline: 'Reptile lovers and exotic shows',
       members: 687,
       icon: '🐍',

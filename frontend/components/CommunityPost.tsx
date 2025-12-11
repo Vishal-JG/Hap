@@ -7,7 +7,8 @@ type CommunityPostProps = {
   date: string;
   time: string;
   title: string;
-  votes: number;          // hardcoded starting value
+  votes: number;
+  user: string;
   onPress?: () => void;
 };
 
@@ -18,9 +19,9 @@ const CommunityPost: React.FC<CommunityPostProps> = ({
   time,
   title,
   votes,
+  user,
   onPress,
 }) => {
-  // 👇 use the prop ONCE as initial value
   const [currentVotes, setCurrentVotes] = useState<number>(votes);
   const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
 
@@ -66,7 +67,9 @@ const CommunityPost: React.FC<CommunityPostProps> = ({
         </View>
 
         <View style={styles.contentContainer}>
-          <Text style={styles.title} numberOfLines={2}>{title}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {title}
+          </Text>
 
           <View style={styles.metaRow}>
             <Text style={styles.location}>{location}</Text>
@@ -79,31 +82,34 @@ const CommunityPost: React.FC<CommunityPostProps> = ({
         </View>
       </View>
 
-      <View style={styles.voteContainer}>
-        <Pressable onPress={handleUpvote} style={styles.voteButton}>
-          <Text
-            style={[
-              styles.voteIcon,
-              userVote === 'up' && styles.voteIconUpActive,
-            ]}
-          >
-            ↑
-          </Text>
-        </Pressable>
+      <View style={styles.footerRow}>
+        <View style={styles.voteContainer}>
+          <Pressable onPress={handleUpvote} style={styles.voteButton}>
+            <Text
+              style={[
+                styles.voteIcon,
+                userVote === 'up' && styles.voteIconUpActive,
+              ]}
+            >
+              ↑
+            </Text>
+          </Pressable>
 
-        {/* 👇 ALWAYS render currentVotes, not props.votes */}
-        <Text style={styles.voteCount}>{currentVotes}</Text>
+          <Text style={styles.voteCount}>{currentVotes}</Text>
 
-        <Pressable onPress={handleDownvote} style={styles.voteButton}>
-          <Text
-            style={[
-              styles.voteIcon,
-              userVote === 'down' && styles.voteIconDownActive,
-            ]}
-          >
-            ↓
-          </Text>
-        </Pressable>
+          <Pressable onPress={handleDownvote} style={styles.voteButton}>
+            <Text
+              style={[
+                styles.voteIcon,
+                userVote === 'down' && styles.voteIconDownActive,
+              ]}
+            >
+              ↓
+            </Text>
+          </Pressable>
+        </View>
+
+        <Text style={styles.username}>{user}</Text>
       </View>
     </Pressable>
   );
@@ -124,10 +130,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flexDirection: 'row',
-    marginBottom: 18,
+    marginBottom: 10, // reduced to make room
   },
   imageContainer: {
-    flex: 0.35,
+    flex: 0.8,       // make image take more width
     marginRight: 12,
     borderRadius: 16,
     overflow: 'hidden',
@@ -135,19 +141,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,255,198,0.4)',
   },
   image: {
-    width: '100%',
-    height: 100,
+    width: 200,
+    height: 150,      // taller image
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   title: {
     color: '#EDEDED',
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     lineHeight: 22,
-    marginBottom: 4,
+    marginBottom: 6,
     flexShrink: 1,
   },
   metaRow: {
@@ -168,40 +174,52 @@ const styles = StyleSheet.create({
     color: '#A070FF',
     fontSize: 13,
   },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+    paddingTop: 6,
+    marginTop: 4,
+  },
   voteContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 0,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'flex-start', // left-justify voting UI
   },
   voteButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#1C1C1C',
   },
   voteIcon: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#FFFFFF',          // white when unpressed
+    color: '#FFFFFF',
   },
   voteIconUpActive: {
-    color: '#00FFC6',          // green/teal when upvoted
+    color: '#00FFC6',
   },
   voteIconDownActive: {
-    color: '#FF7F7F',          // coral when downvoted
+    color: '#FF7F7F',
   },
   voteCount: {
     color: '#EDEDED',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    marginHorizontal: 8,
+    marginHorizontal: 6,
     minWidth: 24,
     textAlign: 'center',
+  },
+  username: {
+    color: '#AAAAAA',
+    fontSize: 13,
+    fontWeight: '500',
+    textAlign: 'right', // right-justify username
   },
   pressedContainer: {
     shadowOpacity: 0.8,

@@ -24,7 +24,6 @@ export default function App() {
   // ONLY HOOKS HERE
   const [authenticated, setAuthenticated] = useState(true); // force logged-in for now
   const [showSplash] = useState(false);                     // disable splash for now
-
   const [fontsLoaded] = useFonts({
     Rubik: require('./assets/fonts/Rubik-Regular.ttf'),
     'Rubik-Medium': require('./assets/fonts/Rubik-Medium.ttf'),

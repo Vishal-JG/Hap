@@ -88,6 +88,7 @@ const AIPlanner = () => {
             value={input}
             onChangeText={setInput}
             placeholder="Type a message..."
+            placeholderTextColor="#EDEDED"
           />
           <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
             <Text style={styles.sendText}>➤</Text>
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   sendText: {
-    color: '#121212',
+    color: '#EDEDED',
     fontSize: 16,
   },
 });
