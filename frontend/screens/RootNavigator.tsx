@@ -8,9 +8,15 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const RootNavigator = () => (
+type RootNavigatorProps = {
+  onSignOut: () => void;
+};
+
+const RootNavigator: React.FC<RootNavigatorProps> = ({ onSignOut }) => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Tabs" component={MyTabs} />
+    <Stack.Screen name="Tabs">
+      {props => <MyTabs {...props} onSignOut={onSignOut} />}
+    </Stack.Screen>
   </Stack.Navigator>
 );
 
